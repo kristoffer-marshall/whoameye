@@ -4,6 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kristoffer Marshall | Digital Business Card</title>
+
+  <!-- Security -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' https://api.somafm.com https://avatars.githubusercontent.com data:;
+    media-src https://ice2.somafm.com https://ice6.somafm.com;
+    connect-src 'self' https://api.somafm.com;
+    font-src 'self';
+    frame-src 'none';
+    object-src 'none';
+    base-uri 'self';
+  " />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d1117" id="themeColor" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Kristoffer" />
+  <link rel="apple-touch-icon" href="vcard-image.jpg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Kristoffer Marshall" />
+  <meta property="og:description" content="Vulnerability Management &amp; Security Engineering @ Cisco (Splunk)" />
+  <meta property="og:url" content="https://kristoff.packets4u.com" />
+  <meta property="og:image" content="https://kristoff.packets4u.com/vcard-image.jpg" />
+
   <link rel="icon" href="eye.gif" type="image/gif" />
   <link rel="stylesheet" href="style.css" />
 <!--No, you won't find an easter egg in the HTML. Hover over some things to see what happens.-->
