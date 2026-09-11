@@ -18,28 +18,35 @@
 
     <div class="player-wrap" id="playerWrap">
       <div class="player">
+        <button class="player-btn" id="prevBtn" aria-label="Previous station">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="19,3 5,12 19,21"/>
+          </svg>
+        </button>
         <button class="player-btn" id="playBtn" aria-label="Play">
-          <!-- Play icon -->
-          <svg id="iconPlay" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <svg id="iconPlay" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5,3 19,12 5,21"/>
           </svg>
-          <!-- Pause icon (hidden) -->
-          <svg id="iconPause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+          <svg id="iconPause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none">
             <rect x="5" y="3" width="4" height="18" rx="1"/>
             <rect x="15" y="3" width="4" height="18" rx="1"/>
           </svg>
         </button>
+        <button class="player-btn" id="nextBtn" aria-label="Next station">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5,3 19,12 5,21"/>
+          </svg>
+        </button>
         <div class="player-label">
-          <strong>Beat Blender</strong>
-          SomaFM &mdash; deep house &amp; chill
+          <strong id="stationName">Beat Blender</strong>
+          <span id="stationDesc">Deep-house &amp; downtempo chill</span>
         </div>
+        <span class="player-idx" id="stationIdx">1 / 46</span>
         <input class="player-vol" id="volSlider" type="range" min="0" max="1" step="0.02" value="0.8" aria-label="Volume" />
       </div>
     </div>
 
-    <audio id="radioAudio" preload="none">
-      <source src="https://ice2.somafm.com/beatblender-128-mp3" type="audio/mpeg" />
-    </audio>
+    <audio id="radioAudio" preload="none"></audio>
 
     <h1 style="margin-top:1.25rem">Kristoffer Marshall</h1>
     <p class="role">Vulnerability Management &amp; Security Engineering @ Cisco (Splunk)</p>
@@ -215,59 +222,7 @@
     var qrImg = document.getElementById("qrImg");
     if (qrImg) qrImg.src = "qr-code.png";
 
-    // ── Mini music player ────────────────────────────────────────────────────────
-    (function () {
-      var avatarBtn  = document.getElementById('avatarBtn');
-      var playerWrap = document.getElementById('playerWrap');
-      var playBtn    = document.getElementById('playBtn');
-      var iconPlay   = document.getElementById('iconPlay');
-      var iconPause  = document.getElementById('iconPause');
-      var volSlider  = document.getElementById('volSlider');
-      var audio      = document.getElementById('radioAudio');
-      var open       = false;
-      var playing    = false;
 
-      audio.volume = parseFloat(volSlider.value);
-
-      avatarBtn.addEventListener('click', function () {
-        open = !open;
-        playerWrap.classList.toggle('open', open);
-        avatarBtn.setAttribute('aria-expanded', open);
-        if (open && !playing) startPlay();
-      });
-
-      playBtn.addEventListener('click', function () {
-        if (playing) {
-          audio.pause();
-          setPlaying(false);
-        } else {
-          startPlay();
-        }
-      });
-
-      volSlider.addEventListener('input', function () {
-        audio.volume = parseFloat(volSlider.value);
-      });
-
-      function startPlay() {
-        // Re-set src to force a fresh connection each time
-        if (!audio.src || audio.ended || audio.error) {
-          audio.load();
-        }
-        audio.play().then(function () { setPlaying(true); }).catch(function () {});
-      }
-
-      function setPlaying(state) {
-        playing = state;
-        iconPlay.style.display  = state ? 'none' : '';
-        iconPause.style.display = state ? ''     : 'none';
-        playBtn.setAttribute('aria-label', state ? 'Pause' : 'Play');
-      }
-
-      audio.addEventListener('pause', function () { setPlaying(false); });
-      audio.addEventListener('playing', function () { setPlaying(true); });
-    })();
-    // ────────────────────────────────────────────────────────────────────────────
 
     // Generates and downloads a .vcf contact card on button tap
     function downloadVCard() {
@@ -294,5 +249,6 @@ END:VCARD`;
       URL.revokeObjectURL(url);
     }
   </script>
+  <script src="player.js"></script>
 </body>
 </html>
