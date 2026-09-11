@@ -75,6 +75,7 @@
   var open       = false;
   var playing    = false;
   var nowTimer   = null;
+  var animTimer  = null;
 
   audio.volume = parseFloat(volSlider.value);
   renderStation();
@@ -98,19 +99,19 @@
   // ── Prev / Next ──────────────────────────────────────────────────────────────
   prevBtn.addEventListener('click', function () {
     idx = (idx - 1 + STATIONS.length) % STATIONS.length;
-    switchStation();
+    switchStation('prev');
   });
 
   nextBtn.addEventListener('click', function () {
     idx = (idx + 1) % STATIONS.length;
-    switchStation();
+    switchStation('next');
   });
 
   randBtn.addEventListener('click', function () {
     var next;
     do { next = Math.floor(Math.random() * STATIONS.length); } while (next === idx);
     idx = next;
-    switchStation();
+    switchStation('shuffle');
   });
 
   // ── Volume ───────────────────────────────────────────────────────────────────
@@ -123,12 +124,12 @@
   audio.addEventListener('playing', function () { setPlaying(true);  });
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
-  function renderStation() {
+  function renderStation(skipImg) {
     var s = STATIONS[idx];
     stationName.textContent = s.title;
     stationDesc.textContent = s.desc;
     stationIdx.textContent  = (idx + 1) + ' / ' + STATIONS.length;
-    if (open) setAvatarImg(true);
+    if (open && !skipImg) setAvatarImg(true);
   }
 
   function setAvatarImg(showStation) {
@@ -149,14 +150,29 @@
     }
   }
 
-  function switchStation() {
+  function switchStation(dir) {
     var wasPlaying = playing;
     audio.pause();
     setPlaying(false);
     audio.src = streamUrl(STATIONS[idx].id);
-    renderStation();
+    renderStation(true);
     fetchNowPlaying();
+    if (open) animateAvatar(dir);
     if (wasPlaying) startPlay();
+  }
+
+  function animateAvatar(dir) {
+    clearTimeout(animTimer);
+    var cls = dir === 'prev' ? 'anim-prev' : dir === 'shuffle' ? 'anim-shuffle' : 'anim-next';
+    // swap image first, then animate
+    avatarEye.src = STATIONS[idx].img;
+    avatarEye.classList.remove('anim-prev', 'anim-next', 'anim-shuffle');
+    // force reflow so removing+re-adding the class restarts the animation
+    void avatarEye.offsetWidth;
+    avatarEye.classList.add(cls);
+    animTimer = setTimeout(function () {
+      avatarEye.classList.remove(cls);
+    }, dir === 'shuffle' ? 950 : 300);
   }
 
   function startPlay() {

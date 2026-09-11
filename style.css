@@ -86,9 +86,42 @@ body {
 
 .avatar.station-open {
   border-radius: 8px;
-  overflow: visible;
+  overflow: hidden;
   animation: none;
   border-color: var(--border);
+}
+
+@keyframes slide-from-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slide-from-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes shuffle-flicker {
+  0%   { opacity: 1; transform: translateX(0); }
+  15%  { opacity: 0; transform: translateX(-30%); }
+  30%  { opacity: 1; transform: translateX(20%); }
+  45%  { opacity: 0; transform: translateX(-20%); }
+  60%  { opacity: 1; transform: translateX(15%); }
+  75%  { opacity: 0; transform: translateX(-10%); }
+  90%  { opacity: 1; transform: translateX(5%); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.avatar-eye.anim-next {
+  animation: slide-from-right 0.25s ease-out;
+}
+
+.avatar-eye.anim-prev {
+  animation: slide-from-left 0.25s ease-out;
+}
+
+.avatar-eye.anim-shuffle {
+  animation: shuffle-flicker 0.9s ease-out;
 }
 
 /* Player panel */
