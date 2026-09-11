@@ -285,6 +285,16 @@ body {
 
 .player-btn:hover { color: var(--accent-hover); }
 
+@keyframes buffering-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.player-btn.buffering {
+  animation: buffering-pulse 0.9s ease-in-out infinite;
+  color: var(--accent);
+}
+
 .player-idx {
   font-size: 0.65rem;
   color: var(--text-muted);

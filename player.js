@@ -77,16 +77,32 @@
   var nowPlaying   = document.getElementById('nowPlaying');
   var audio      = document.getElementById('radioAudio');
 
-  var FAVS_KEY   = 'somaFavourites';
-  var favs       = loadFavs();
-  var idx        = startingIdx();
-  var open       = false;
-  var playing    = false;
-  var nowTimer   = null;
-  var animTimer  = null;
-  var favsOpen   = false;
+  var FAVS_KEY    = 'somaFavourites';
+  var VOL_KEY     = 'somaVolume';
+  var LAST_KEY    = 'somaLastStation';
+  var RETRY_DELAY = 5000;  // ms before retrying a failed stream
+  var MAX_RETRIES = 5;
 
-  audio.volume = parseFloat(volSlider.value);
+  var favs        = loadFavs();
+  var idx         = startingIdx();
+  var open        = false;
+  var playing     = false;
+  var nowTimer    = null;
+  var animTimer   = null;
+  var favsOpen    = false;
+  var retryCount  = 0;
+  var retryTimer  = null;
+  var buffering   = false;
+
+  // Restore saved volume
+  var savedVol = parseFloat(localStorage.getItem(VOL_KEY));
+  if (!isNaN(savedVol)) {
+    audio.volume  = savedVol;
+    volSlider.value = savedVol;
+  } else {
+    audio.volume = parseFloat(volSlider.value);
+  }
+
   renderStation();
   fetchNowPlaying();
   renderFavsList();
@@ -97,7 +113,7 @@
     playerWrap.classList.toggle('open', open);
     avatarBtn.setAttribute('aria-expanded', open);
     setAvatarImg(open);
-    if (open && !playing) startPlay();
+    if (open && !playing) { saveLastStation(); startPlay(); }
   });
 
   // ── Play / Pause ─────────────────────────────────────────────────────────────
@@ -124,9 +140,10 @@
     switchStation('shuffle');
   });
 
-  // ── Volume ───────────────────────────────────────────────────────────────────
+  // ── Volume (with persistence) ────────────────────────────────────────────────
   volSlider.addEventListener('input', function () {
     audio.volume = parseFloat(volSlider.value);
+    try { localStorage.setItem(VOL_KEY, volSlider.value); } catch (e) {}
   });
 
   // ── Favourite toggle ─────────────────────────────────────────────────────────
@@ -149,8 +166,52 @@
   });
 
   // ── Audio events ─────────────────────────────────────────────────────────────
-  audio.addEventListener('pause',   function () { setPlaying(false); updateMediaSession(); });
-  audio.addEventListener('playing', function () { setPlaying(true);  updateMediaSession(); });
+  audio.addEventListener('playing', function () {
+    setPlaying(true);
+    setBuffering(false);
+    retryCount = 0;
+    clearTimeout(retryTimer);
+    updateMediaSession();
+  });
+
+  audio.addEventListener('pause', function () {
+    setPlaying(false);
+    setBuffering(false);
+    updateMediaSession();
+  });
+
+  audio.addEventListener('waiting', function () {
+    if (playing) setBuffering(true);
+  });
+
+  audio.addEventListener('canplay', function () {
+    setBuffering(false);
+  });
+
+  // ── Error & stall handling with auto-retry ────────────────────────────────────
+  function scheduleRetry() {
+    if (retryCount >= MAX_RETRIES) {
+      nowPlaying.textContent = '\u26a0 Stream unavailable. Try another station.';
+      setBuffering(false);
+      return;
+    }
+    retryCount++;
+    setBuffering(true);
+    nowPlaying.textContent = '\u21ba Reconnecting\u2026 (attempt ' + retryCount + '/' + MAX_RETRIES + ')';
+    retryTimer = setTimeout(function () {
+      audio.src = streamUrl(STATIONS[idx].id);
+      audio.load();
+      audio.play().catch(function () { scheduleRetry(); });
+    }, RETRY_DELAY);
+  }
+
+  audio.addEventListener('error', function () {
+    if (playing || buffering) scheduleRetry();
+  });
+
+  audio.addEventListener('stalled', function () {
+    if (playing) scheduleRetry();
+  });
 
   // ── Media Session API (hardware/keyboard media keys) ─────────────────────────
   if ('mediaSession' in navigator) {
@@ -208,9 +269,13 @@
 
   function switchStation(dir) {
     var wasPlaying = playing;
+    clearTimeout(retryTimer);
+    retryCount = 0;
     audio.pause();
     setPlaying(false);
+    setBuffering(false);
     audio.src = streamUrl(STATIONS[idx].id);
+    saveLastStation();
     renderStation(true);
     fetchNowPlaying();
     if (open) animateAvatar(dir);
@@ -263,8 +328,18 @@
     if (!audio.src || audio.src === window.location.href) {
       audio.src = streamUrl(STATIONS[idx].id);
     }
+    setBuffering(true);
     audio.load();
-    audio.play().catch(function () {});
+    audio.play().catch(function () { setBuffering(false); });
+  }
+
+  function setBuffering(state) {
+    buffering = state;
+    playBtn.classList.toggle('buffering', state);
+  }
+
+  function saveLastStation() {
+    try { localStorage.setItem(LAST_KEY, STATIONS[idx].id); } catch (e) {}
   }
 
   function fetchNowPlaying() {
@@ -307,7 +382,12 @@
   }
 
   function startingIdx() {
-    // Resume on the first favourite if one exists, otherwise default to 0
+    // Priority: last played > first favourite > default (Beat Blender)
+    var lastId = localStorage.getItem(LAST_KEY);
+    if (lastId) {
+      var li = STATIONS.findIndex(function (s) { return s.id === lastId; });
+      if (li !== -1) return li;
+    }
     if (favs.length) {
       var fi = STATIONS.findIndex(function (s) { return s.id === favs[0]; });
       if (fi !== -1) return fi;
