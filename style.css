@@ -139,6 +139,16 @@ body {
   font-size: 0.78rem;
 }
 
+.player-now {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .player-idx {
   font-size: 0.65rem;
   color: var(--text-muted);
