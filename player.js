@@ -58,6 +58,7 @@
   var playBtn    = document.getElementById('playBtn');
   var prevBtn    = document.getElementById('prevBtn');
   var nextBtn    = document.getElementById('nextBtn');
+  var randBtn    = document.getElementById('randBtn');
   var iconPlay   = document.getElementById('iconPlay');
   var iconPause  = document.getElementById('iconPause');
   var volSlider  = document.getElementById('volSlider');
@@ -98,6 +99,13 @@
 
   nextBtn.addEventListener('click', function () {
     idx = (idx + 1) % STATIONS.length;
+    switchStation();
+  });
+
+  randBtn.addEventListener('click', function () {
+    var next;
+    do { next = Math.floor(Math.random() * STATIONS.length); } while (next === idx);
+    idx = next;
     switchStation();
   });
 
