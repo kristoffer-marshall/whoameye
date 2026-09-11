@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kristoffer Marshall | Digital Business Card</title>
   <link rel="stylesheet" href="style.css" />
-
+<!--No, you won't find an easter egg in the HTML. Hover over some things to see what happens.-->
 </head>
 <body>
   <canvas id="bg"></canvas>
@@ -91,7 +91,7 @@
 
     <div class="actions">
       <!-- Direct Contact Action -->
-      <button class="btn btn-primary" onclick="downloadVCard()">
+      <a class="btn btn-primary" href="Kristoffer_Marshall.vcf" download>
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"></path>
           <path d="M12 11v6"></path>
@@ -99,7 +99,7 @@
           <circle cx="12" cy="7" r="1"></circle>
         </svg>
         Save Contact (vCard)
-      </button>
+      </a>
 
       <!-- Email Links (split diagonal) -->
       <div class="btn-email-pair">
@@ -261,30 +261,7 @@
 
 
 
-    // Generates and downloads a .vcf contact card on button tap
-    function downloadVCard() {
-      const vcard =
-`BEGIN:VCARD
-VERSION:3.0
-N:Marshall;Kristoffer;;;
-FN:Kristoffer Marshall
-TITLE:Senior Vulnerability Management Engineer
-EMAIL;TYPE=INTERNET,WORK:krimarsh@cisco.com
-NOTE:Cybersecurity & Systems Engineering
-URL:https://kristoff.packets4u.com
-PHOTO:https://avatars.githubusercontent.com/u/6224285
-END:VCARD`;
 
-      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "Kristoffer_Marshall.vcf");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
   </script>
   <script src="player.js"></script>
 </body>
