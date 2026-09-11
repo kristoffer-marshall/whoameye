@@ -71,6 +71,7 @@
   var iconPlay   = document.getElementById('iconPlay');
   var iconPause  = document.getElementById('iconPause');
   var volSlider  = document.getElementById('volSlider');
+  var playerDisplay= document.getElementById('playerDisplay');
   var stationName= document.getElementById('stationName');
   var stationDesc= document.getElementById('stationDesc');
   var stationIdx  = document.getElementById('stationIdx');
@@ -242,11 +243,15 @@
   // ── Helpers ──────────────────────────────────────────────────────────────────
   function renderStation(skipImg) {
     var s = STATIONS[idx];
+    playerDisplay.classList.remove('switching');
+    void playerDisplay.offsetWidth;
+    playerDisplay.classList.add('switching');
     stationName.textContent = s.title;
     stationDesc.textContent = s.desc;
     stationIdx.textContent  = (idx + 1) + ' / ' + STATIONS.length;
     if (open && !skipImg) setAvatarImg(true);
     renderFavsList();
+    setTimeout(function () { playerDisplay.classList.remove('switching'); }, 250);
   }
 
   function setAvatarImg(showStation) {

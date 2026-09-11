@@ -12,6 +12,23 @@
   <canvas id="bg"></canvas>
 
   <main class="card">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <!-- Moon (dark mode indicator) -->
+      <svg id="iconDark" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <!-- Sun (light mode indicator) -->
+      <svg id="iconLight" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <!-- Monitor (OS indicator) -->
+      <svg id="iconOs" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+    </button>
     <!-- Initials or replace with <img src="profile.jpg" class="avatar" alt="Avatar"> -->
     <button class="avatar" id="avatarBtn" aria-label="Toggle music player" aria-expanded="false">
       <img class="avatar-eye" id="avatarEye" src="eye.gif" alt="" aria-hidden="true" />
@@ -21,7 +38,7 @@
       <div class="player">
 
         <!-- Row 1: station info display -->
-        <div class="player-display">
+        <div class="player-display" id="playerDisplay">
           <strong id="stationName">Beat Blender</strong>
           <span id="stationDesc">Deep-house &amp; downtempo chill</span>
           <span class="player-now" id="nowPlaying"></span>
@@ -264,6 +281,7 @@
 
 
   </script>
+  <script src="theme.js"></script>
   <script src="player.js"></script>
 </body>
 </html>

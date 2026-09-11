@@ -7,6 +7,7 @@ canvas#bg {
   z-index: 0;
 }
 
+/* ── Theme variables ── */
 :root {
   --bg: #0d1117;
   --card-bg: rgba(22, 27, 34, 0.45);
@@ -17,8 +18,45 @@ canvas#bg {
   --accent-hover: darkgreen;
   --btn-bg: #21262d;
   --btn-hover: #30363d;
-  --pulse: #e3a008;        /* avatar glow colour — edit here */
-  --pulse-bright: #fcd34d; /* avatar glow bright peak — edit here */
+  --pulse: #e3a008;
+  --pulse-bright: #fcd34d;
+  --theme-icon-dark: block;
+  --theme-icon-light: none;
+  --theme-icon-os: none;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --card-bg: rgba(246, 248, 250, 0.85);
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-muted: #656d76;
+  --accent: #1a7f37;
+  --accent-hover: #116329;
+  --btn-bg: #f6f8fa;
+  --btn-hover: #eaeef2;
+  --pulse: #bf8700;
+  --pulse-bright: #d4a72c;
+}
+
+[data-theme="os"] {
+  /* inherits dark by default, overrides with light if OS is light */
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="os"] {
+    --bg: #ffffff;
+    --card-bg: rgba(246, 248, 250, 0.85);
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text-muted: #656d76;
+    --accent: #1a7f37;
+    --accent-hover: #116329;
+    --btn-bg: #f6f8fa;
+    --btn-hover: #eaeef2;
+    --pulse: #bf8700;
+    --pulse-bright: #d4a72c;
+  }
 }
 
 * {
@@ -31,6 +69,7 @@ body {
   position: relative;
   z-index: 1;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   background-color: transparent;
   color: var(--text);
   display: flex;
@@ -38,6 +77,18 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 1.5rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card {
@@ -48,10 +99,11 @@ body {
   border-radius: 16px;
   max-width: 420px;
   width: 100%;
-  padding: 2.25rem;
+  padding: clamp(1.25rem, 5vw, 2.25rem);
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(1px);
   text-align: center;
+  animation: card-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .avatar {
@@ -131,6 +183,15 @@ body {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.6rem 0.85rem;
+}
+
+@keyframes display-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.player-display.switching {
+  animation: display-fade-in 0.2s ease-out;
 }
 
 /* Row 1 — text display */
@@ -348,14 +409,14 @@ body {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 5vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 0.25rem;
 }
 
 .role {
-  font-size: 0.95rem;
+  font-size: clamp(0.8rem, 3vw, 0.95rem);
   color: var(--text-muted);
   margin-bottom: 0.5rem;
 }
@@ -368,6 +429,31 @@ h1 {
   font-weight: 600;
   margin-bottom: 1.5rem;
 }
+
+/* Theme toggle */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.3rem 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  z-index: 2;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg { display: block; }
 
 .actions {
   display: flex;
@@ -387,7 +473,7 @@ h1 {
   border: 1px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   font-weight: 500;
   transition: all 0.15s ease;
   cursor: pointer;
@@ -466,4 +552,24 @@ h1 {
   display: block;
   width: 110px;
   height: 110px;
+}
+
+[data-theme="light"] canvas#bg,
+[data-theme="os"] canvas#bg {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme="os"] canvas#bg {
+    display: block;
+  }
+}
+
+[data-theme="light"] body,
+[data-theme="os"] body {
+  background-color: #f0f2f5;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme="os"] body {
+    background-color: transparent;
+  }
 }
