@@ -101,27 +101,12 @@ body {
   to   { transform: translateX(0); }
 }
 
-@keyframes shuffle-flicker {
-  0%   { opacity: 1; transform: translateX(0); }
-  15%  { opacity: 0; transform: translateX(-30%); }
-  30%  { opacity: 1; transform: translateX(20%); }
-  45%  { opacity: 0; transform: translateX(-20%); }
-  60%  { opacity: 1; transform: translateX(15%); }
-  75%  { opacity: 0; transform: translateX(-10%); }
-  90%  { opacity: 1; transform: translateX(5%); }
-  100% { opacity: 1; transform: translateX(0); }
-}
-
 .avatar-eye.anim-next {
-  animation: slide-from-right 0.25s ease-out;
+  animation: slide-from-right 0.18s ease-out;
 }
 
 .avatar-eye.anim-prev {
-  animation: slide-from-left 0.25s ease-out;
-}
-
-.avatar-eye.anim-shuffle {
-  animation: shuffle-flicker 0.9s ease-out;
+  animation: slide-from-left 0.18s ease-out;
 }
 
 /* Player panel */

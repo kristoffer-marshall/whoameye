@@ -163,16 +163,43 @@
 
   function animateAvatar(dir) {
     clearTimeout(animTimer);
-    var cls = dir === 'prev' ? 'anim-prev' : dir === 'shuffle' ? 'anim-shuffle' : 'anim-next';
-    // swap image first, then animate
-    avatarEye.src = STATIONS[idx].img;
-    avatarEye.classList.remove('anim-prev', 'anim-next', 'anim-shuffle');
-    // force reflow so removing+re-adding the class restarts the animation
-    void avatarEye.offsetWidth;
+    if (dir === 'shuffle') {
+      animateShuffle();
+    } else {
+      slideImg(STATIONS[idx].img, dir === 'prev' ? 'anim-prev' : 'anim-next');
+    }
+  }
+
+  function slideImg(src, cls) {
+    avatarEye.classList.remove('anim-prev', 'anim-next');
+    void avatarEye.offsetWidth; // restart animation
+    avatarEye.src = src;
     avatarEye.classList.add(cls);
     animTimer = setTimeout(function () {
       avatarEye.classList.remove(cls);
-    }, dir === 'shuffle' ? 950 : 300);
+    }, 220);
+  }
+
+  function animateShuffle() {
+    // pick 4 random intermediate stations (not the final destination)
+    var intermediates = [];
+    while (intermediates.length < 4) {
+      var r = Math.floor(Math.random() * STATIONS.length);
+      if (r !== idx && intermediates.indexOf(r) === -1) intermediates.push(r);
+    }
+    // sequence: 4 intermediates then the real destination
+    var sequence = intermediates.concat([idx]);
+    var step = 0;
+    var interval = 160; // ms per image
+    function showNext() {
+      slideImg(STATIONS[sequence[step]].img, 'anim-next');
+      step++;
+      if (step < sequence.length) {
+        animTimer = setTimeout(showNext, interval);
+        interval += 40; // each step slows down slightly
+      }
+    }
+    showNext();
   }
 
   function startPlay() {
