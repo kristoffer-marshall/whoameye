@@ -93,7 +93,7 @@ body {
 }
 
 .player-wrap.open {
-  max-height: 120px;
+  max-height: 160px;
   margin: 1rem auto 0;
 }
 
@@ -144,9 +144,8 @@ body {
   margin-top: 0.15rem;
   font-size: 0.68rem;
   color: var(--accent);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .player-idx {
