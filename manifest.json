@@ -1,7 +1,7 @@
 {
-  "name": "Kristoffer Marshall",
-  "short_name": "Kristoffer",
-  "description": "Digital business card for Kristoffer Marshall — Vulnerability Management & Security Engineering",
+  "name": "Digital Business Card",
+  "short_name": "Card",
+  "description": "A digital business card with an integrated SomaFM radio player.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
