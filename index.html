@@ -78,8 +78,14 @@
       transition: border-color 0.2s ease;
     }
 
+    @keyframes avatar-pulse {
+      0%, 100% { box-shadow: 0 0 6px 2px var(--accent); }
+      50%       { box-shadow: 0 0 18px 6px var(--accent-hover); }
+    }
+
     .avatar:hover {
       border-color: var(--accent);
+      animation: avatar-pulse 1.2s ease-in-out infinite;
     }
 
     /* Player panel */
