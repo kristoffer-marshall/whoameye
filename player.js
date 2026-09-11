@@ -62,6 +62,12 @@
   var prevBtn    = document.getElementById('prevBtn');
   var nextBtn    = document.getElementById('nextBtn');
   var randBtn    = document.getElementById('randBtn');
+  var favBtn     = document.getElementById('favBtn');
+  var favIcon    = document.getElementById('favIcon');
+  var favsListBtn= document.getElementById('favsListBtn');
+  var favsDrawer = document.getElementById('favsDrawer');
+  var favsList   = document.getElementById('favsList');
+  var favsEmpty  = document.getElementById('favsEmpty');
   var iconPlay   = document.getElementById('iconPlay');
   var iconPause  = document.getElementById('iconPause');
   var volSlider  = document.getElementById('volSlider');
@@ -71,15 +77,19 @@
   var nowPlaying   = document.getElementById('nowPlaying');
   var audio      = document.getElementById('radioAudio');
 
-  var idx        = 0; // starts on Beat Blender
+  var FAVS_KEY   = 'somaFavourites';
+  var favs       = loadFavs();
+  var idx        = startingIdx();
   var open       = false;
   var playing    = false;
   var nowTimer   = null;
   var animTimer  = null;
+  var favsOpen   = false;
 
   audio.volume = parseFloat(volSlider.value);
   renderStation();
   fetchNowPlaying();
+  renderFavsList();
 
   // ── Avatar toggle ────────────────────────────────────────────────────────────
   avatarBtn.addEventListener('click', function () {
@@ -119,6 +129,25 @@
     audio.volume = parseFloat(volSlider.value);
   });
 
+  // ── Favourite toggle ─────────────────────────────────────────────────────────
+  favBtn.addEventListener('click', function () {
+    var id = STATIONS[idx].id;
+    var pos = favs.indexOf(id);
+    if (pos === -1) { favs.push(id); }
+    else            { favs.splice(pos, 1); }
+    saveFavs();
+    updateFavBtn();
+    renderFavsList();
+  });
+
+  // ── Favourites drawer toggle ──────────────────────────────────────────────────
+  favsListBtn.addEventListener('click', function () {
+    favsOpen = !favsOpen;
+    favsDrawer.classList.toggle('open', favsOpen);
+    favsDrawer.setAttribute('aria-hidden', !favsOpen);
+    favsListBtn.setAttribute('aria-expanded', favsOpen);
+  });
+
   // ── Audio events ─────────────────────────────────────────────────────────────
   audio.addEventListener('pause',   function () { setPlaying(false); });
   audio.addEventListener('playing', function () { setPlaying(true);  });
@@ -130,6 +159,7 @@
     stationDesc.textContent = s.desc;
     stationIdx.textContent  = (idx + 1) + ' / ' + STATIONS.length;
     if (open && !skipImg) setAvatarImg(true);
+    renderFavsList();
   }
 
   function setAvatarImg(showStation) {
@@ -236,6 +266,67 @@
     iconPlay.style.display  = state ? 'none' : '';
     iconPause.style.display = state ? ''     : 'none';
     playBtn.setAttribute('aria-label', state ? 'Pause' : 'Play');
+  }
+
+  // ── Favourites helpers ────────────────────────────────────────────────────────────
+  function loadFavs() {
+    try { return JSON.parse(localStorage.getItem(FAVS_KEY)) || []; }
+    catch (e) { return []; }
+  }
+
+  function saveFavs() {
+    try { localStorage.setItem(FAVS_KEY, JSON.stringify(favs)); }
+    catch (e) {}
+  }
+
+  function startingIdx() {
+    // Resume on the first favourite if one exists, otherwise default to 0
+    if (favs.length) {
+      var fi = STATIONS.findIndex(function (s) { return s.id === favs[0]; });
+      if (fi !== -1) return fi;
+    }
+    return 0;
+  }
+
+  function updateFavBtn() {
+    var active = favs.indexOf(STATIONS[idx].id) !== -1;
+    favIcon.setAttribute('fill', active ? 'currentColor' : 'none');
+    favBtn.classList.toggle('fav-active', active);
+    favBtn.setAttribute('aria-pressed', active);
+  }
+
+  function renderFavsList() {
+    updateFavBtn();
+    favsList.innerHTML = '';
+    var hasFavs = favs.length > 0;
+    favsEmpty.style.display = hasFavs ? 'none' : '';
+    favs.forEach(function (id) {
+      var station = STATIONS.find(function (s) { return s.id === id; });
+      if (!station) return;
+      var li = document.createElement('li');
+      li.className = station.id === STATIONS[idx].id ? 'active' : '';
+      li.innerHTML =
+        '<img src="' + station.img + '" alt="" aria-hidden="true" />' +
+        '<span class="fav-title">' + station.title + '</span>' +
+        '<button class="fav-del" aria-label="Remove ' + station.title + ' from favourites">&times;</button>';
+      // click row → switch to station
+      li.addEventListener('click', function (e) {
+        if (e.target.classList.contains('fav-del')) return;
+        var newIdx = STATIONS.findIndex(function (s) { return s.id === id; });
+        if (newIdx !== -1 && newIdx !== idx) {
+          idx = newIdx;
+          switchStation('next');
+        }
+      });
+      // click × → remove from favourites
+      li.querySelector('.fav-del').addEventListener('click', function (e) {
+        e.stopPropagation();
+        favs = favs.filter(function (f) { return f !== id; });
+        saveFavs();
+        renderFavsList();
+      });
+      favsList.appendChild(li);
+    });
   }
 })();
 // ─────────────────────────────────────────────────────────────────────────────
