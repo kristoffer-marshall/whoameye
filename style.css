@@ -1,0 +1,303 @@
+canvas#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+:root {
+  --bg: #0d1117;
+  --card-bg: rgba(22, 27, 34, 0.45);
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #2ea043;
+  --accent-hover: darkgreen;
+  --btn-bg: #21262d;
+  --btn-hover: #30363d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  z-index: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: transparent;
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  max-width: 420px;
+  width: 100%;
+  padding: 2.25rem;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(1px);
+  text-align: center;
+}
+
+.avatar {
+  position: relative;
+  overflow: hidden;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 auto 0;
+  border: 2px solid var(--border);
+  cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='26' font-size='26'>🎵</text></svg>") 16 16, pointer;
+  background: none;
+  padding: 0;
+  transition: border-color 0.2s ease;
+}
+
+@keyframes avatar-pulse {
+  0%, 100% { box-shadow: 0 0 3px 1px var(--accent); }
+  50%       { box-shadow: 0 0 9px 3px var(--accent-hover); }
+}
+
+.avatar:hover {
+  border-color: var(--accent);
+  animation: avatar-pulse 3.2s ease-in-out infinite;
+}
+
+/* Player panel */
+.player-wrap {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease, margin 0.4s ease;
+  margin: 0 auto;
+}
+
+.player-wrap.open {
+  max-height: 80px;
+  margin: 1rem auto 0;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+}
+
+.player-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.player-btn:hover { color: var(--accent-hover); }
+
+.player-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.player-label strong {
+  display: block;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.player-vol {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 64px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.player-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.player-vol::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+}
+
+.avatar-eye {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: calc(50% + 20px) center;
+  transform: scaleY(1.05);
+  transform-origin: center;
+  mask-image: radial-gradient(circle, black 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle, black 35%, transparent 100%);
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.role {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.meta {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: var(--btn-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+  border-color: #8b949e;
+}
+
+.btn-email-pair {
+  display: flex;
+  gap: 0;
+}
+
+/* Diagonal cut offset — how many px the slant spans horizontally.
+   Increase to make the cut shallower; decrease to make it steeper. */
+.btn-email-left {
+  flex: 1;
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+  /* clip right edge: top-right pulled left by 12px, bottom-right at full width */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  padding-right: 1.5rem;
+  justify-content: flex-start;
+}
+
+.btn-email-right {
+  flex: 1;
+  border-radius: 0 8px 8px 0;
+  border-left: none;
+  /* clip left edge: same \ diagonal as the left button's right edge */
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+  padding-left: 1.5rem;
+  justify-content: flex-end;
+}
+
+.btn-email-left:hover,
+.btn-email-right:hover {
+  background: var(--btn-hover);
+  border-color: #8b949e;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.qr-section {
+  border-top: 1px solid var(--border);
+  padding-top: 1.25rem;
+}
+
+.qr-section p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.qr-code {
+  display: inline-block;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.qr-code img {
+  display: block;
+  width: 110px;
+  height: 110px;
+}
