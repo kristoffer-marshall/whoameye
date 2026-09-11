@@ -138,12 +138,14 @@
       avatarEye.style.transform = 'none';
       avatarEye.style.maskImage = 'none';
       avatarEye.style.webkitMaskImage = 'none';
+      avatarBtn.classList.add('station-open');
     } else {
       avatarEye.src = 'eye.gif';
       avatarEye.style.objectPosition = 'calc(50% + 20px) center';
       avatarEye.style.transform = 'scaleY(1.05)';
       avatarEye.style.maskImage = '';
       avatarEye.style.webkitMaskImage = '';
+      avatarBtn.classList.remove('station-open');
     }
   }
 

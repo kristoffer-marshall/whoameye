@@ -84,6 +84,13 @@ body {
   animation: avatar-pulse 3.2s ease-in-out infinite;
 }
 
+.avatar.station-open {
+  border-radius: 8px;
+  overflow: visible;
+  animation: none;
+  border-color: var(--border);
+}
+
 /* Player panel */
 .player-wrap {
   overflow: hidden;
