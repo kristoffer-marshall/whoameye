@@ -17,6 +17,8 @@ canvas#bg {
   --accent-hover: darkgreen;
   --btn-bg: #21262d;
   --btn-hover: #30363d;
+  --pulse: #e3a008;        /* avatar glow colour — edit here */
+  --pulse-bright: #fcd34d; /* avatar glow bright peak — edit here */
 }
 
 * {
@@ -73,12 +75,12 @@ body {
 }
 
 @keyframes avatar-pulse {
-  0%, 100% { box-shadow: 0 0 3px 1px var(--accent); }
-  50%       { box-shadow: 0 0 9px 3px var(--accent-hover); }
+  0%, 100% { box-shadow: 0 0 3px 1px var(--pulse); }
+  50%       { box-shadow: 0 0 9px 3px var(--pulse-bright); }
 }
 
 .avatar:hover {
-  border-color: var(--accent);
+  border-color: var(--pulse);
   animation: avatar-pulse 3.2s ease-in-out infinite;
 }
 
