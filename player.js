@@ -262,7 +262,6 @@
     var wasPlaying = playing;
     audio.pause();
     stopPolling();
-    audio.src = streamUrl(STATIONS[idx].id);
     renderStation();
     if (wasPlaying) startPlay();
   }
@@ -270,10 +269,7 @@
   function startPlay() {
     initAudio();
     if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-    if (!audio.src || audio.src === window.location.href) {
-      audio.src = streamUrl(STATIONS[idx].id);
-    }
-    audio.load();
+    audio.src = streamUrl(STATIONS[idx].id);
     audio.play().catch(function () {});
   }
 
