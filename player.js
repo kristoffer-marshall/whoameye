@@ -1,61 +1,59 @@
 // ── SomaFM Mini Player ────────────────────────────────────────────────────────
 (function () {
   var STATIONS = [
-    { id: 'beatblender',  title: 'Beat Blender',        desc: 'Deep-house & downtempo chill' },
-    { id: 'groovesalad',  title: 'Groove Salad',         desc: 'Ambient/downtempo beats & grooves' },
-    { id: 'dronezone',    title: 'Drone Zone',           desc: 'Atmospheric textures, minimal beats' },
-    { id: 'deepspaceone', title: 'Deep Space One',       desc: 'Ambient electronic & space music' },
-    { id: 'spacestation', title: 'Space Station Soma',   desc: 'Spaced-out ambient electronica' },
-    { id: 'gsclassic',    title: 'Groove Salad Classic', desc: 'Classic early-2000s chilled grooves' },
-    { id: 'groovesalad2', title: 'Groove Salad 2',       desc: 'Alternative chilled ambient mix' },
-    { id: 'synphaera',    title: 'Synphaera Radio',      desc: 'Electronic ambient & space music' },
-    { id: 'secretagent',  title: 'Secret Agent',         desc: 'Stylish spy-era lounge' },
-    { id: 'indiepop',     title: 'Indie Pop Rocks!',     desc: 'New & classic indie pop' },
-    { id: 'u80s',         title: 'Underground 80s',      desc: 'Synthpop & New Wave' },
-    { id: 'lush',         title: 'Lush',                 desc: 'Mellow female vocals, electronic' },
-    { id: 'seventies',    title: 'Left Coast 70s',       desc: 'Mellow Seventies album rock' },
-    { id: 'defcon',       title: 'DEF CON Radio',        desc: 'Music for hacking' },
-    { id: 'folkfwd',      title: 'Folk Forward',         desc: 'Indie folk & alt-folk' },
-    { id: 'thetrip',      title: 'The Trip',             desc: 'Progressive house & trance' },
-    { id: 'bossa',        title: 'Bossa Beyond',         desc: 'Bossa Nova, Samba & beyond' },
-    { id: 'bootliquor',   title: 'Boot Liquor',          desc: 'Americana roots music' },
-    { id: 'reggae',       title: 'Heavyweight Reggae',   desc: 'Reggae, Ska & Rocksteady' },
-    { id: '7soul',        title: 'Seven Inch Soul',      desc: 'Vintage soul on 45 RPM vinyl' },
-    { id: 'poptron',      title: 'PopTron',              desc: 'Electropop & indie dance rock' },
-    { id: 'sonicuniverse',title: 'Sonic Universe',       desc: 'Avant-garde jazz & beyond' },
-    { id: 'suburbsofgoa', title: 'Suburbs of Goa',       desc: 'Desi-influenced Asian world beats' },
-    { id: 'fluid',        title: 'Fluid',                desc: 'Instrumental hiphop & future soul' },
-    { id: 'darkzone',     title: 'The Dark Zone',        desc: 'Dark deep ambient' },
-    { id: 'thistle',      title: 'ThistleRadio',         desc: 'Celtic roots & branches' },
-    { id: 'dz2',          title: 'Drone Zone 2',         desc: 'Eclectic atmospheric textures' },
-    { id: 'illstreet',    title: 'Illinois Street Lounge',desc: 'Bachelor pad & playful exotica' },
-    { id: 'vaporwaves',   title: 'Vaporwaves',           desc: 'All Vaporwave. All the time.' },
-    { id: 'cliqhop',      title: 'cliqhop idm',          desc: 'Blips, beeps & IDM beats' },
-    { id: 'digitalis',    title: 'Digitalis',            desc: 'Digitally-affected analog rock' },
-    { id: 'missioncontrol',title:'Mission Control',      desc: 'Celebrating NASA & space explorers' },
-    { id: 'metal',        title: 'Metal Detector',       desc: 'Doom, prog, sludge & thrash' },
-    { id: 'dubstep',      title: 'Dub Step Beyond',      desc: 'Dubstep, dub & deep bass' },
-    { id: 'brfm',         title: 'Black Rock FM',        desc: 'From the Black Rock Desert' },
-    { id: 'tikitime',     title: 'Tiki Time',            desc: 'Classic Tiki & island rhythms' },
-    { id: 'covers',       title: 'Covers',               desc: 'Songs you know, artists you don\'t' },
-    { id: 'n5md',         title: 'n5MD Radio',           desc: 'Ambient, post-rock & experimental' },
-    { id: 'sf1033',       title: 'SF 10-33',             desc: 'Ambient + SF public safety radio' },
-    { id: 'insound',      title: 'The In-Sound',         desc: '60s/70s Euro pop & psychedelia' },
-    { id: 'live',         title: 'SomaFM Live',          desc: 'Live events & rebroadcasts' },
-    { id: 'doomed',       title: 'Doomed',               desc: 'Dark industrial & ambient' },
-    { id: 'scanner',      title: 'SF Police Scanner',    desc: 'SF public safety scanner feed' },
-    { id: 'specials',     title: 'SomaFM Specials',      desc: 'Afternoon Jazz, Wavepool & more' },
-    { id: 'chillits',     title: 'Chillits Radio',       desc: '25 years of chilling & camping' },
-    { id: 'sfinsf',       title: 'SF in SF',             desc: 'Sci-fi & fantasy author readings' },
+    { id: 'beatblender',   img: 'https://api.somafm.com/logos/120/beatblender120.png',      title: 'Beat Blender',          desc: 'Deep-house & downtempo chill' },
+    { id: 'groovesalad',   img: 'https://api.somafm.com/logos/120/groovesalad120.png',      title: 'Groove Salad',           desc: 'Ambient/downtempo beats & grooves' },
+    { id: 'dronezone',     img: 'https://api.somafm.com/logos/120/dronezone120.jpg',        title: 'Drone Zone',             desc: 'Atmospheric textures, minimal beats' },
+    { id: 'deepspaceone',  img: 'https://api.somafm.com/logos/120/deepspaceone120.gif',     title: 'Deep Space One',         desc: 'Ambient electronic & space music' },
+    { id: 'spacestation',  img: 'https://api.somafm.com/logos/120/spacestation120.jpg',     title: 'Space Station Soma',     desc: 'Spaced-out ambient electronica' },
+    { id: 'gsclassic',     img: 'https://api.somafm.com/logos/120/gsclassic120.jpg',        title: 'Groove Salad Classic',   desc: 'Classic early-2000s chilled grooves' },
+    { id: 'groovesalad2',  img: 'https://api.somafm.com/logos/120/groovesalad2120.png',     title: 'Groove Salad 2',         desc: 'Alternative chilled ambient mix' },
+    { id: 'synphaera',     img: 'https://api.somafm.com/logos/120/synphaera120.jpg',        title: 'Synphaera Radio',        desc: 'Electronic ambient & space music' },
+    { id: 'secretagent',   img: 'https://api.somafm.com/logos/120/secretagent120.jpg',      title: 'Secret Agent',           desc: 'Stylish spy-era lounge' },
+    { id: 'indiepop',      img: 'https://api.somafm.com/logos/120/indiepop120.jpg',         title: 'Indie Pop Rocks!',       desc: 'New & classic indie pop' },
+    { id: 'u80s',          img: 'https://api.somafm.com/logos/120/u80s120.png',             title: 'Underground 80s',        desc: 'Synthpop & New Wave' },
+    { id: 'lush',          img: 'https://api.somafm.com/logos/120/lush120.jpg',             title: 'Lush',                   desc: 'Mellow female vocals, electronic' },
+    { id: 'seventies',     img: 'https://api.somafm.com/logos/120/seventies120.jpg',        title: 'Left Coast 70s',         desc: 'Mellow Seventies album rock' },
+    { id: 'defcon',        img: 'https://api.somafm.com/logos/120/defcon120.png',           title: 'DEF CON Radio',          desc: 'Music for hacking' },
+    { id: 'folkfwd',       img: 'https://api.somafm.com/logos/120/folkfwd120.jpg',          title: 'Folk Forward',           desc: 'Indie folk & alt-folk' },
+    { id: 'thetrip',       img: 'https://api.somafm.com/logos/120/thetrip120.jpg',          title: 'The Trip',               desc: 'Progressive house & trance' },
+    { id: 'bossa',         img: 'https://api.somafm.com/logos/120/bossa120.jpg',            title: 'Bossa Beyond',           desc: 'Bossa Nova, Samba & beyond' },
+    { id: 'bootliquor',    img: 'https://api.somafm.com/logos/120/bootliquor120.jpg',       title: 'Boot Liquor',            desc: 'Americana roots music' },
+    { id: 'reggae',        img: 'https://api.somafm.com/logos/120/reggae120.png',           title: 'Heavyweight Reggae',     desc: 'Reggae, Ska & Rocksteady' },
+    { id: '7soul',         img: 'https://api.somafm.com/logos/120/7soul120.png',            title: 'Seven Inch Soul',        desc: 'Vintage soul on 45 RPM vinyl' },
+    { id: 'poptron',       img: 'https://api.somafm.com/logos/120/poptron120.png',          title: 'PopTron',                desc: 'Electropop & indie dance rock' },
+    { id: 'sonicuniverse', img: 'https://api.somafm.com/logos/120/sonicuniverse120.jpg',    title: 'Sonic Universe',         desc: 'Avant-garde jazz & beyond' },
+    { id: 'suburbsofgoa',  img: 'https://api.somafm.com/logos/120/sog120.jpg',              title: 'Suburbs of Goa',         desc: 'Desi-influenced Asian world beats' },
+    { id: 'fluid',         img: 'https://api.somafm.com/logos/120/fluid120.jpg',            title: 'Fluid',                  desc: 'Instrumental hiphop & future soul' },
+    { id: 'darkzone',      img: 'https://api.somafm.com/logos/120/darkzone120.jpg',         title: 'The Dark Zone',          desc: 'Dark deep ambient' },
+    { id: 'thistle',       img: 'https://api.somafm.com/logos/120/thistle120.png',          title: 'ThistleRadio',           desc: 'Celtic roots & branches' },
+    { id: 'dz2',           img: 'https://api.somafm.com/logos/120/dz2120.jpg',              title: 'Drone Zone 2',           desc: 'Eclectic atmospheric textures' },
+    { id: 'illstreet',     img: 'https://api.somafm.com/logos/120/illstreet120.jpg',        title: 'Illinois Street Lounge', desc: 'Bachelor pad & playful exotica' },
+    { id: 'vaporwaves',    img: 'https://api.somafm.com/logos/120/vaporwaves120.jpg',       title: 'Vaporwaves',             desc: 'All Vaporwave. All the time.' },
+    { id: 'cliqhop',       img: 'https://api.somafm.com/logos/120/cliqhop120.png',          title: 'cliqhop idm',            desc: 'Blips, beeps & IDM beats' },
+    { id: 'digitalis',     img: 'https://api.somafm.com/logos/120/digitalis120.png',        title: 'Digitalis',              desc: 'Digitally-affected analog rock' },
+    { id: 'missioncontrol',img: 'https://api.somafm.com/logos/120/missioncontrol120.jpg',   title: 'Mission Control',        desc: 'Celebrating NASA & space explorers' },
+    { id: 'metal',         img: 'https://api.somafm.com/logos/120/metal120.png',            title: 'Metal Detector',         desc: 'Doom, prog, sludge & thrash' },
+    { id: 'dubstep',       img: 'https://api.somafm.com/logos/120/dubstep120.png',          title: 'Dub Step Beyond',        desc: 'Dubstep, dub & deep bass' },
+    { id: 'brfm',          img: 'https://api.somafm.com/logos/120/brfm120.jpg',             title: 'Black Rock FM',          desc: 'From the Black Rock Desert' },
+    { id: 'tikitime',      img: 'https://api.somafm.com/logos/120/tikitime120.jpg',         title: 'Tiki Time',              desc: 'Classic Tiki & island rhythms' },
+    { id: 'covers',        img: 'https://api.somafm.com/logos/120/covers120.jpg',           title: 'Covers',                 desc: "Songs you know, artists you don't" },
+    { id: 'n5md',          img: 'https://api.somafm.com/logos/120/n5md120.png',             title: 'n5MD Radio',             desc: 'Ambient, post-rock & experimental' },
+    { id: 'sf1033',        img: 'https://api.somafm.com/logos/120/sf1033120.png',           title: 'SF 10-33',               desc: 'Ambient + SF public safety radio' },
+    { id: 'insound',       img: 'https://api.somafm.com/logos/120/insound120.jpg',          title: 'The In-Sound',           desc: '60s/70s Euro pop & psychedelia' },
+    { id: 'live',          img: 'https://api.somafm.com/logos/120/live120.jpg',             title: 'SomaFM Live',            desc: 'Live events & rebroadcasts' },
+    { id: 'doomed',        img: 'https://api.somafm.com/logos/120/doomed120.png',           title: 'Doomed',                 desc: 'Dark industrial & ambient' },
+    { id: 'scanner',       img: 'https://api.somafm.com/logos/120/sf1033120.png',           title: 'SF Police Scanner',      desc: 'SF public safety scanner feed' },
+    { id: 'specials',      img: 'https://api.somafm.com/logos/120/SomaFMDJSquare120.jpg',   title: 'SomaFM Specials',        desc: 'Afternoon Jazz, Wavepool & more' },
+    { id: 'chillits',      img: 'https://api.somafm.com/logos/120/chillits120.png',         title: 'Chillits Radio',         desc: '25 years of chilling & camping' },
+    { id: 'sfinsf',        img: 'https://api.somafm.com/logos/120/sfinsf120.jpg',           title: 'SF in SF',               desc: 'Sci-fi & fantasy author readings' },
   ];
 
   function streamUrl(id) {
     return 'https://ice2.somafm.com/' + id + '-128-mp3';
   }
 
-  function stationImgUrl(id) {
-    return 'https://api.somafm.com/logos/120/' + id + '120.png';
-  }
+
 
   var avatarBtn  = document.getElementById('avatarBtn');
   var avatarEye  = document.getElementById('avatarEye');
@@ -135,7 +133,7 @@
 
   function setAvatarImg(showStation) {
     if (showStation) {
-      avatarEye.src = stationImgUrl(STATIONS[idx].id);
+      avatarEye.src = STATIONS[idx].img;
       avatarEye.style.objectPosition = 'center center';
       avatarEye.style.transform = 'none';
       avatarEye.style.maskImage = 'none';
