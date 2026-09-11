@@ -149,8 +149,34 @@
   });
 
   // ── Audio events ─────────────────────────────────────────────────────────────
-  audio.addEventListener('pause',   function () { setPlaying(false); });
-  audio.addEventListener('playing', function () { setPlaying(true);  });
+  audio.addEventListener('pause',   function () { setPlaying(false); updateMediaSession(); });
+  audio.addEventListener('playing', function () { setPlaying(true);  updateMediaSession(); });
+
+  // ── Media Session API (hardware/keyboard media keys) ─────────────────────────
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('play',         function () { startPlay(); });
+    navigator.mediaSession.setActionHandler('pause',        function () { audio.pause(); });
+    navigator.mediaSession.setActionHandler('previoustrack',function () {
+      idx = (idx - 1 + STATIONS.length) % STATIONS.length;
+      switchStation('prev');
+    });
+    navigator.mediaSession.setActionHandler('nexttrack',    function () {
+      idx = (idx + 1) % STATIONS.length;
+      switchStation('next');
+    });
+  }
+
+  function updateMediaSession() {
+    if (!('mediaSession' in navigator)) return;
+    var s = STATIONS[idx];
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title:  s.title,
+      artist: 'SomaFM',
+      album:  s.desc,
+      artwork: [{ src: s.img, sizes: '120x120', type: 'image/jpeg' }]
+    });
+    navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+  }
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
   function renderStation(skipImg) {
@@ -189,6 +215,7 @@
     fetchNowPlaying();
     if (open) animateAvatar(dir);
     if (wasPlaying) startPlay();
+    updateMediaSession();
   }
 
   function animateAvatar(dir) {
