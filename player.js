@@ -53,7 +53,12 @@
     return 'https://ice2.somafm.com/' + id + '-128-mp3';
   }
 
+  function stationImgUrl(id) {
+    return 'https://api.somafm.com/logos/120/' + id + '120.png';
+  }
+
   var avatarBtn  = document.getElementById('avatarBtn');
+  var avatarEye  = document.getElementById('avatarEye');
   var playerWrap = document.getElementById('playerWrap');
   var playBtn    = document.getElementById('playBtn');
   var prevBtn    = document.getElementById('prevBtn');
@@ -82,6 +87,7 @@
     open = !open;
     playerWrap.classList.toggle('open', open);
     avatarBtn.setAttribute('aria-expanded', open);
+    setAvatarImg(open);
     if (open && !playing) startPlay();
   });
 
@@ -124,6 +130,23 @@
     stationName.textContent = s.title;
     stationDesc.textContent = s.desc;
     stationIdx.textContent  = (idx + 1) + ' / ' + STATIONS.length;
+    if (open) setAvatarImg(true);
+  }
+
+  function setAvatarImg(showStation) {
+    if (showStation) {
+      avatarEye.src = stationImgUrl(STATIONS[idx].id);
+      avatarEye.style.objectPosition = 'center center';
+      avatarEye.style.transform = 'none';
+      avatarEye.style.maskImage = 'none';
+      avatarEye.style.webkitMaskImage = 'none';
+    } else {
+      avatarEye.src = 'eye.gif';
+      avatarEye.style.objectPosition = 'calc(50% + 20px) center';
+      avatarEye.style.transform = 'scaleY(1.05)';
+      avatarEye.style.maskImage = '';
+      avatarEye.style.webkitMaskImage = '';
+    }
   }
 
   function switchStation() {
