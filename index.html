@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kristoffer Marshall | Digital Business Card</title>
+  <style>
+    canvas#bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    :root {
+      --bg: #0d1117;
+      --card-bg: rgba(22, 27, 34, 0.45);
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #2ea043;
+      --accent-hover: #3fb950;
+      --btn-bg: #21262d;
+      --btn-hover: #30363d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      position: relative;
+      z-index: 1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: transparent;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 420px;
+      width: 100%;
+      padding: 2.25rem;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(1px);
+      text-align: center;
+    }
+
+    .avatar {
+      position: relative;
+      overflow: hidden;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 0 auto 1.25rem;
+      border: 2px solid var(--border);
+    }
+
+    .avatar-eye {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: calc(50% + 20px) center;
+      transform: scaleY(1.05);
+      transform-origin: center;
+      mask-image: radial-gradient(circle, black 35%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle, black 35%, transparent 100%);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    .role {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1rem;
+      background: var(--btn-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--btn-hover);
+      border-color: #8b949e;
+    }
+
+    .btn-email-pair {
+      display: flex;
+      gap: 0;
+    }
+
+    /* Diagonal cut offset — how many px the slant spans horizontally.
+       Increase to make the cut shallower; decrease to make it steeper. */
+    .btn-email-left {
+      flex: 1;
+      border-radius: 8px 0 0 8px;
+      border-right: none;
+      /* clip right edge: top-right pulled left by 12px, bottom-right at full width */
+      clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+      padding-right: 1.5rem;
+      justify-content: flex-start;
+    }
+
+    .btn-email-right {
+      flex: 1;
+      border-radius: 0 8px 8px 0;
+      border-left: none;
+      /* clip left edge: same \ diagonal as the left button's right edge */
+      clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+      padding-left: 1.5rem;
+      justify-content: flex-end;
+    }
+
+    .btn-email-left:hover,
+    .btn-email-right:hover {
+      background: var(--btn-hover);
+      border-color: #8b949e;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .qr-section {
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+
+    .qr-section p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .qr-code {
+      display: inline-block;
+      padding: 8px;
+      background: #ffffff;
+      border-radius: 8px;
+    }
+
+    .qr-code img {
+      display: block;
+      width: 110px;
+      height: 110px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <main class="card">
+    <!-- Initials or replace with <img src="profile.jpg" class="avatar" alt="Avatar"> -->
+    <div class="avatar">
+      <a href="https://superbad.com/1/germ00/index.html" target="_blank" rel="noopener noreferrer" style="position:absolute;inset:0;z-index:1;cursor:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><text y=%2224%22 font-size=%2228%22>π</text></svg>') 16 16, auto;">
+        <img class="avatar-eye" src="eye.gif" alt="" aria-hidden="true" />
+      </a>
+    </div>
+
+    <h1>Kristoffer Marshall</h1>
+    <p class="role">Vulnerability Management &amp; Security Engineering @ Cisco (Splunk)</p>
+    <p class="meta">Cybersecurity &bull; Systems &bull; Automation</p>
+
+    <div class="actions">
+      <!-- Direct Contact Action -->
+      <button class="btn btn-primary" onclick="downloadVCard()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"></path>
+          <path d="M12 11v6"></path>
+          <path d="M9 14l3 3 3-3"></path>
+          <circle cx="12" cy="7" r="1"></circle>
+        </svg>
+        Save Contact (vCard)
+      </button>
+
+      <!-- Email Links (split diagonal) -->
+      <div class="btn-email-pair">
+        <a class="btn btn-email-left" href="mailto:krimarsh@cisco.com">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          Business
+        </a>
+        <a class="btn btn-email-right" href="mailto:kristoffer.marshall@pm.me">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          Personal
+        </a>
+      </div>
+
+      <!-- GitHub Link -->
+      <a class="btn" href="https://github.com/kristoffer-marshall" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+
+      <!-- LinkedIn Link -->
+      <a class="btn" href="https://www.linkedin.com/in/kristoffermarshall/" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.6 1.6 0 0 0 1.6-1.6 1.6 1.6 0 0 0-1.6-1.6 1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 1.6 1.6m1.4 9.74v-8.37H5.06v8.37h2.8z"/>
+        </svg>
+        LinkedIn
+      </a>
+<!--
+    </div>
+
+    <div class="qr-section">
+      <p>Scan to view &amp; share</p>
+      <div class="qr-code">
+        <img id="qrImg" alt="QR Code to this page" />
+      </div>
+    </div>
+  </main>
+-->
+  <script>
+    // ── Neon hexagon-forming particles animation (codepen.io/towc/pen/mJzOWJ) ──
+    (function () {
+      // Maximum spread of the animation from center, as a fraction of half the screen width/height.
+      // 1.0 = full half-viewport on that axis; 0.2 = 20% of half the viewport.
+      var maxSpreadFractionX = 0.4;
+      var maxSpreadFractionY = 1.0;
+
+      var c = document.getElementById('bg');
+      var w = c.width = window.innerWidth;
+      var h = c.height = window.innerHeight;
+      var ctx = c.getContext('2d');
+
+      var opts = {
+        len: 30,
+        count: 20,
+        baseTime: 10,
+        addedTime: 8,
+        dieChance: .02,
+        spawnChance: 1,
+        sparkChance: .1,
+        sparkDist: 10,
+        sparkSize: 3,
+        color: 'hsl(hue,100%,light%)',
+        baseLight: 50,
+        addedLight: 10,
+        shadowToTimePropMult: 6,
+        baseLightInputMultiplier: .01,
+        addedLightInputMultiplier: .02,
+        cx: w / 2,
+        cy: h / 2,
+        repaintAlpha: .04,
+        hueChange: .7
+      };
+
+      var tick = 0,
+          lines = [],
+          dieX = (w / 2 * maxSpreadFractionX) / opts.len,
+          dieY = (h / 2 * maxSpreadFractionY) / opts.len,
+          baseRad = Math.PI * 2 / 6;
+
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+
+      function loop() {
+        window.requestAnimationFrame(loop);
+        ++tick;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'rgba(0,0,0,' + opts.repaintAlpha + ')';
+        ctx.fillRect(0, 0, w, h);
+        ctx.globalCompositeOperation = 'lighter';
+        if (lines.length < opts.count && Math.random() < opts.spawnChance)
+          lines.push(new Line());
+        lines.forEach(function (line) { line.step(); });
+      }
+
+      function Line() { this.reset(); }
+      Line.prototype.reset = function () {
+        this.x = 0; this.y = 0;
+        this.addedX = 0; this.addedY = 0;
+        this.rad = 0;
+        this.lightInputMultiplier = opts.baseLightInputMultiplier + opts.addedLightInputMultiplier * Math.random();
+        this.color = opts.color.replace('hue', tick * opts.hueChange);
+        this.cumulativeTime = 0;
+        this.beginPhase();
+      };
+      Line.prototype.beginPhase = function () {
+        this.x += this.addedX;
+        this.y += this.addedY;
+        this.time = 0;
+        this.targetTime = (opts.baseTime + opts.addedTime * Math.random()) | 0;
+        this.rad += baseRad * (Math.random() < .5 ? 1 : -1);
+        this.addedX = Math.cos(this.rad);
+        this.addedY = Math.sin(this.rad);
+        if (Math.random() < opts.dieChance || this.x > dieX || this.x < -dieX || this.y > dieY || this.y < -dieY)
+          this.reset();
+      };
+      Line.prototype.step = function () {
+        ++this.time;
+        ++this.cumulativeTime;
+        if (this.time >= this.targetTime) this.beginPhase();
+        var prop = this.time / this.targetTime,
+            wave = Math.sin(prop * Math.PI / 2),
+            x = this.addedX * wave,
+            y = this.addedY * wave;
+        ctx.shadowBlur = prop * opts.shadowToTimePropMult;
+        ctx.fillStyle = ctx.shadowColor = this.color.replace('light', opts.baseLight + opts.addedLight * Math.sin(this.cumulativeTime * this.lightInputMultiplier));
+        ctx.fillRect(opts.cx + (this.x + x) * opts.len, opts.cy + (this.y + y) * opts.len, 2, 2);
+        if (Math.random() < opts.sparkChance)
+          ctx.fillRect(
+            opts.cx + (this.x + x) * opts.len + Math.random() * opts.sparkDist * (Math.random() < .5 ? 1 : -1) - opts.sparkSize / 2,
+            opts.cy + (this.y + y) * opts.len + Math.random() * opts.sparkDist * (Math.random() < .5 ? 1 : -1) - opts.sparkSize / 2,
+            opts.sparkSize, opts.sparkSize
+          );
+      };
+
+      window.addEventListener('resize', function () {
+        w = c.width = window.innerWidth;
+        h = c.height = window.innerHeight;
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, w, h);
+        opts.cx = w / 2;
+        opts.cy = h / 2;
+        dieX = (w / 2 * maxSpreadFractionX) / opts.len;
+        dieY = (h / 2 * maxSpreadFractionY) / opts.len;
+      });
+
+      loop();
+    })();
+    // ────────────────────────────────────────────────────────────────────────────
+    document.getElementById("qrImg").src = "qr-code.png";
+
+    // Generates and downloads a .vcf contact card on button tap
+    function downloadVCard() {
+      const vcard =
+`BEGIN:VCARD
+VERSION:3.0
+N:Marshall;Kristoffer;;;
+FN:Kristoffer Marshall
+TITLE:Senior Vulnerability Management Engineer
+EMAIL;TYPE=INTERNET,WORK:krimarsh@cisco.com
+NOTE:Cybersecurity & Systems Engineering
+URL:https://kristoff.packets4u.com
+PHOTO:https://avatars.githubusercontent.com/u/6224285
+END:VCARD`;
+
+      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Kristoffer_Marshall.vcf");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
