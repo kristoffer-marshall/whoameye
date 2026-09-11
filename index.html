@@ -70,8 +70,101 @@
       justify-content: center;
       font-size: 2rem;
       font-weight: 600;
-      margin: 0 auto 1.25rem;
+      margin: 0 auto 0;
       border: 2px solid var(--border);
+      cursor: pointer;
+      background: none;
+      padding: 0;
+      transition: border-color 0.2s ease;
+    }
+
+    .avatar:hover {
+      border-color: var(--accent);
+    }
+
+    /* Player panel */
+    .player-wrap {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease, margin 0.4s ease;
+      margin: 0 auto;
+    }
+
+    .player-wrap.open {
+      max-height: 80px;
+      margin: 1rem auto 0;
+    }
+
+    .player {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.6rem 0.85rem;
+    }
+
+    .player-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+
+    .player-btn:hover { color: var(--accent-hover); }
+
+    .player-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex: 1;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+
+    .player-label strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .player-vol {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 64px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .player-vol::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    .player-vol::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
     }
 
     .avatar-eye {
@@ -214,13 +307,36 @@
 
   <main class="card">
     <!-- Initials or replace with <img src="profile.jpg" class="avatar" alt="Avatar"> -->
-    <div class="avatar">
-      <a href="https://superbad.com/1/germ00/index.html" target="_blank" rel="noopener noreferrer" style="position:absolute;inset:0;z-index:1;cursor:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><text y=%2224%22 font-size=%2228%22>π</text></svg>') 16 16, auto;">
-        <img class="avatar-eye" src="eye.gif" alt="" aria-hidden="true" />
-      </a>
+    <button class="avatar" id="avatarBtn" aria-label="Toggle music player" aria-expanded="false">
+      <img class="avatar-eye" src="eye.gif" alt="" aria-hidden="true" />
+    </button>
+
+    <div class="player-wrap" id="playerWrap">
+      <div class="player">
+        <button class="player-btn" id="playBtn" aria-label="Play">
+          <!-- Play icon -->
+          <svg id="iconPlay" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5,3 19,12 5,21"/>
+          </svg>
+          <!-- Pause icon (hidden) -->
+          <svg id="iconPause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+            <rect x="5" y="3" width="4" height="18" rx="1"/>
+            <rect x="15" y="3" width="4" height="18" rx="1"/>
+          </svg>
+        </button>
+        <div class="player-label">
+          <strong>Beat Blender</strong>
+          SomaFM &mdash; deep house &amp; chill
+        </div>
+        <input class="player-vol" id="volSlider" type="range" min="0" max="1" step="0.02" value="0.8" aria-label="Volume" />
+      </div>
     </div>
 
-    <h1>Kristoffer Marshall</h1>
+    <audio id="radioAudio" preload="none">
+      <source src="https://ice2.somafm.com/beatblender-128-mp3" type="audio/mpeg" />
+    </audio>
+
+    <h1 style="margin-top:1.25rem">Kristoffer Marshall</h1>
     <p class="role">Vulnerability Management &amp; Security Engineering @ Cisco (Splunk)</p>
     <p class="meta">Cybersecurity &bull; Systems &bull; Automation</p>
 
@@ -392,6 +508,60 @@
     })();
     // ────────────────────────────────────────────────────────────────────────────
     document.getElementById("qrImg").src = "qr-code.png";
+
+    // ── Mini music player ────────────────────────────────────────────────────────
+    (function () {
+      var avatarBtn  = document.getElementById('avatarBtn');
+      var playerWrap = document.getElementById('playerWrap');
+      var playBtn    = document.getElementById('playBtn');
+      var iconPlay   = document.getElementById('iconPlay');
+      var iconPause  = document.getElementById('iconPause');
+      var volSlider  = document.getElementById('volSlider');
+      var audio      = document.getElementById('radioAudio');
+      var open       = false;
+      var playing    = false;
+
+      audio.volume = parseFloat(volSlider.value);
+
+      avatarBtn.addEventListener('click', function () {
+        open = !open;
+        playerWrap.classList.toggle('open', open);
+        avatarBtn.setAttribute('aria-expanded', open);
+        if (open && !playing) startPlay();
+      });
+
+      playBtn.addEventListener('click', function () {
+        if (playing) {
+          audio.pause();
+          setPlaying(false);
+        } else {
+          startPlay();
+        }
+      });
+
+      volSlider.addEventListener('input', function () {
+        audio.volume = parseFloat(volSlider.value);
+      });
+
+      function startPlay() {
+        // Re-set src to force a fresh connection each time
+        if (!audio.src || audio.ended || audio.error) {
+          audio.load();
+        }
+        audio.play().then(function () { setPlaying(true); }).catch(function () {});
+      }
+
+      function setPlaying(state) {
+        playing = state;
+        iconPlay.style.display  = state ? 'none' : '';
+        iconPause.style.display = state ? ''     : 'none';
+        playBtn.setAttribute('aria-label', state ? 'Pause' : 'Play');
+      }
+
+      audio.addEventListener('pause', function () { setPlaying(false); });
+      audio.addEventListener('playing', function () { setPlaying(true); });
+    })();
+    // ────────────────────────────────────────────────────────────────────────────
 
     // Generates and downloads a .vcf contact card on button tap
     function downloadVCard() {
