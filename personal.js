@@ -22,7 +22,10 @@
 
     if (p.tagline) setText('personalTagline', p.tagline);
 
-    if (p.website) setContent('ogUrl', p.website);
+    if (p.website) {
+      setContent('ogUrl', p.website);
+      setContent('ogImage', p.website + '/vcard-image.jpg');
+    }
 
     setHref('emailBusiness', p.businessemail ? 'mailto:' + p.businessemail : null);
     setHref('emailPersonal', p.personalemail ? 'mailto:' + p.personalemail : null);
