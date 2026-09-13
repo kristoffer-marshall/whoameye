@@ -1,3 +1,4 @@
-*.vcf
-config.js
-vcard-image.jpg
+# contact.vcf is intentionally tracked (public contact info)
+# Add your own secrets or private files below
+*.env
+*.secret
