@@ -1,12 +1,8 @@
 // ── Neon hexagon-forming particles animation ──────────────────────────────────
 // Based on codepen.io/towc/pen/mJzOWJ
 (function () {
-  // Maximum spread of the animation from center, as a fraction of half the screen width/height.
-  // 1.0 = full half-viewport on that axis; 0.2 = 20% of half the viewport.
-  var maxSpreadFractionX = 0.4;
-  var maxSpreadFractionY = 1.0;
-
-  var c = document.getElementById('bg');
+  var c    = document.getElementById('bg');
+  var card = document.querySelector('.card');
   var w = c.width = window.innerWidth;
   var h = c.height = window.innerHeight;
   var ctx = c.getContext('2d');
@@ -35,9 +31,13 @@
 
   var tick = 0,
       lines = [],
-      dieX = (w / 2 * maxSpreadFractionX) / opts.len,
-      dieY = (h / 2 * maxSpreadFractionY) / opts.len,
+      dieX = cardHalfWidth() / opts.len,
+      dieY = (h / 2) / opts.len,
       baseRad = Math.PI * 2 / 6;
+
+  function cardHalfWidth() {
+    return card ? card.offsetWidth / 2 : w / 2;
+  }
 
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, w, h);
@@ -102,8 +102,8 @@
     ctx.fillRect(0, 0, w, h);
     opts.cx = w / 2;
     opts.cy = h / 2;
-    dieX = (w / 2 * maxSpreadFractionX) / opts.len;
-    dieY = (h / 2 * maxSpreadFractionY) / opts.len;
+    dieX = cardHalfWidth() / opts.len;
+    dieY = (h / 2) / opts.len;
   });
 
   loop();
