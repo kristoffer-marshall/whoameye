@@ -5,19 +5,19 @@ packets4u.com
 
 Most of the personal info on the card (name, title, tagline, emails, and social links) is loaded at runtime from `personal.json`. To reuse this project for yourself:
 
-1. Edit `personal.json` with your own details:
-   ```json
-   {
-     "name": "Your Name",
-     "title": "Your Job Title",
-     "tagline": "Your Tagline",
-     "businessemail": "you@work.com",
-     "personalemail": "you@personal.com",
-     "website": "https://your-domain.com",
-     "linkedin": "https://www.linkedin.com/in/yourname",
-     "signal": "https://signal.me/u/YourUsername",
-     "github": "https://github.com/yourname"
-   }
+1. Edit `personal.js` with your own details:
+   ```js
+   var PERSONAL = {
+     name:          "Your Name",
+     title:         "Your Job Title",
+     tagline:       "Your Tagline",
+     businessemail: "you@work.com",
+     personalemail: "you@personal.com",
+     website:       "https://your-domain.com",
+     linkedin:      "https://www.linkedin.com/in/yourname",
+     signal:        "https://signal.me/u/YourUsername",
+     github:        "https://github.com/yourname"
+   };
    ```
 2. Replace `eye.gif`, `vcard-image.jpg`, and `qr-code.png` with your own images (keep the same filenames, or update the references in `index.html`).
 3. Replace `contact.vcf` with your own vCard (any standard vCard generator will produce one).
