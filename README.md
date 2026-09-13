@@ -1,7 +1,7 @@
 # WhoAmEye
 
 <p align="center">
-  <img src="screenshot.png" alt="WhoAmEye screenshot" width="20%" />
+  <img src="screenshot.png" alt="WhoAmEye screenshot" width="40%" />
 </p>
 
 ## Description
