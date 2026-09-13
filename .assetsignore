@@ -1,0 +1,12 @@
+# Exclude specific files
+secret.json
+draft-index.html
+
+# Exclude whole directories
+internal/
+temp/
+
+# Exclude file types
+*.md
+*.bak
+*.env*
