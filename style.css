@@ -100,6 +100,22 @@ body {
   }
 }
 
+.source-link {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.75rem;
+  color: var(--border);
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  line-height: 0;
+  z-index: 2;
+}
+
+.source-link:hover {
+  opacity: 1;
+  color: var(--text-muted);
+}
+
 .card {
   position: relative;
   z-index: 1;
