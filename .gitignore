@@ -1,3 +1,6 @@
+# ── Screenshots — commit manually when ready ────────────────────────────────
+screenshot.png
+
 # ── Personal data files — never commit these ─────────────────────────────────
 # Copy personal.example.js → personal.js and fill in your details
 personal.js

@@ -1,5 +1,7 @@
 # WhoAmEye
 
+![WhoAmEye screenshot](screenshot.png)
+
 ## Description
 This is a digital business card with a hidden built-in music player and an animated background.
 
