@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Last;First;;;
+FN:First Last
+TITLE:Your Job Title
+EMAIL;TYPE=INTERNET,WORK:you@work.com
+EMAIL;TYPE=INTERNET,HOME:you@personal.com
+TEL;TYPE=CELL:+1-555-000-0000
+URL:https://your-domain.com
+NOTE:Your tagline or a brief description
+END:VCARD
