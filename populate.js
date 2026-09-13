@@ -22,6 +22,8 @@
     setContent('ogImage', p.website + '/vcard-image.jpg');
   }
 
+  if (p.vcf) setHref('vcardLink', p.vcf);
+
   setHref('emailBusiness', p.businessemail ? 'mailto:' + p.businessemail : null);
   setHref('emailPersonal', p.personalemail ? 'mailto:' + p.personalemail : null);
   setHref('githubLink',    p.github);

@@ -1,4 +1,5 @@
-# contact.vcf is intentionally tracked (public contact info)
+# my.vcf contains personal data and is kept off GitHub
+my.vcf
 # Add your own secrets or private files below
 *.env
 *.secret

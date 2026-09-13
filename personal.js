@@ -4,12 +4,13 @@
 var PERSONAL = {
   name:          "Kristoffer Marshall",
   title:         "Senior Vulnerability Management Engineer @ Cisco (Splunk)",
-  tagline:       "Cybersecurity \u2022 Systems \u2022 Automation",
+  tagline:       "Cybersecurity • Systems • Automation",
   businessemail: "krimarsh@cisco.com",
   personalemail: "kristoffer.marshall@pm.me",
   website:       "https://kristoff.packets4u.com",
   linkedin:      "https://www.linkedin.com/in/kristoffermarshall",
   signal:        "https://signal.me/u/KristoffM.42",
-  github:        "https://github.com/kristoffer-marshall"
+  github:        "https://github.com/kristoffer-marshall",
+  vcf:           "my.vcf"
 };
 // ─────────────────────────────────────────────────────────────────────────────
