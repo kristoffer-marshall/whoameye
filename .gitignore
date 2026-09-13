@@ -1,5 +1,3 @@
-# ── Screenshots — commit manually when ready ────────────────────────────────
-screenshot.png
 
 # ── Personal data files — never commit these ─────────────────────────────────
 # Copy personal.example.js → personal.js and fill in your details
@@ -7,8 +5,7 @@ personal.js
 # Your vCard and profile photo stay local
 my.vcf
 vcard-image.jpg
-# Your QR code is personal
-qr-code.png
+
 # Sitemap contains your domain URL
 sitemap.xml
 # ── General ───────────────────────────────────────────────────────────────────

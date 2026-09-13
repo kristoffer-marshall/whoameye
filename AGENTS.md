@@ -14,5 +14,5 @@
 ## Git
 - Automatically git add any appropriate files, and update .gitignore as needed.
 - Do not commit sensitive data (e.g., API keys, credentials) directly to the repository.
-- Do not push without explicit approval.
+- **Do NOT git push without explicit user approval. Always stop after `git commit` and ask before pushing.**
 - If the user says that something isn't working, it's not a Git issue, treat it as a local issue.
