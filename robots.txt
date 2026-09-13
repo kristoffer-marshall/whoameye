@@ -1,7 +1,6 @@
 User-agent: *
 Disallow: /
 
-Sitemap: https://kristoff.packets4u.com/sitemap.xml
 
 User-agent: GPTBot
 Disallow: /

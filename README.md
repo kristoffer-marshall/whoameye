@@ -3,24 +3,17 @@ packets4u.com
 
 ## Using this as a template
 
-Most of the personal info on the card (name, title, tagline, emails, and social links) is loaded at runtime from `personal.json`. To reuse this project for yourself:
+All personal data is gitignored — the repo contains no private information. To set it up:
 
-1. Edit `personal.js` with your own details:
-   ```js
-   var PERSONAL = {
-     name:          "Your Name",
-     title:         "Your Job Title",
-     tagline:       "Your Tagline",
-     businessemail: "you@work.com",
-     personalemail: "you@personal.com",
-     website:       "https://your-domain.com",
-     linkedin:      "https://www.linkedin.com/in/yourname",
-     signal:        "https://signal.me/u/YourUsername",
-     github:        "https://github.com/yourname"
-   };
+1. Copy `personal.example.js` to `personal.js` and fill in your details:
+   ```sh
+   cp personal.example.js personal.js
    ```
-2. Replace `eye.gif`, `vcard-image.jpg`, and `qr-code.png` with your own images (keep the same filenames, or update the references in `index.html`).
-3. Replace `contact.vcf` with your own vCard (any standard vCard generator will produce one).
-4. Update `manifest.json` with your own app name/description if you want a custom PWA install experience.
+2. Add your profile photo as `vcard-image.jpg`.
+3. Add your QR code as `qr-code.png`.
+4. Add your vCard as `my.vcf` (see `contact.example.vcf` for the format).
+5. Optionally update `manifest.json` with your name and description for the PWA.
 
-Everything else — the music player, theming, and animations — works out of the box with no further changes.
+`personal.js`, `vcard-image.jpg`, `qr-code.png`, `my.vcf`, and `sitemap.xml` are all gitignored and will never be pushed to GitHub.
+
+Everything else — the music player, theming, and animations — works out of the box.
