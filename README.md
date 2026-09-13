@@ -1,6 +1,6 @@
 # WhoAmEye
 
-![WhoAmEye screenshot](screenshot.png)
+<img src="screenshot.png" alt="WhoAmEye screenshot" width="20%" />
 
 ## Description
 This is a digital business card with a hidden built-in music player and an animated background.
