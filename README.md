@@ -1,6 +1,8 @@
 # WhoAmEye
 
-<img src="screenshot.png" alt="WhoAmEye screenshot" width="20%" />
+<p align="center">
+  <img src="screenshot.png" alt="WhoAmEye screenshot" width="20%" />
+</p>
 
 ## Description
 This is a digital business card with a hidden built-in music player and an animated background.
