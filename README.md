@@ -1,5 +1,4 @@
-# packets4u
-packets4u.com
+# WhoAmEye
 
 ## Using this as a template
 
@@ -10,9 +9,8 @@ All personal data is gitignored — the repo contains no private information. To
    cp personal.example.js personal.js
    ```
 2. Add your profile photo as `vcard-image.jpg`.
-3. Add your QR code as `qr-code.png`.
-4. Add your vCard as `my.vcf` (see `contact.example.vcf` for the format).
-5. Optionally update `manifest.json` with your name and description for the PWA.
+3. Add your vCard as `my.vcf` (see `contact.example.vcf` for the format).
+4. Optionally update `manifest.json` with your name and description for the PWA.
 
 `personal.js`, `vcard-image.jpg`, `qr-code.png`, `my.vcf`, and `sitemap.xml` are all gitignored and will never be pushed to GitHub.
 
